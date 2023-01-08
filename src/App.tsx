@@ -1,73 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
-import { Country } from './model/Country';
+import { User } from './model/User';
 import { Box, Button, Card, CardContent, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { margin } from '@mui/system';
 
 function App() {
-  const [countries, setCountries] = useState<Country[]>();
-  const [selectedCountry, setSelectedCountry] = useState<Country>();
+  const [users, setUsers] = useState<User[]>();
+  const [selectedUser, setSelectedUser] = useState<User>();
   const [searchText, setSearchText] = useState<string>("");
-  const [continent, setContinent] = useState<string>("");
-
+  
   useEffect(() => {
-    axios.get('http://localhost:8080/countries').then((response) => setCountries(response.data));
+    axios.get('http://localhost:8080/imc').then((response) => setUsers(response.data));
   }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/countries?searchText=' + searchText + '&continent=' + continent).then((response) => setCountries(response.data));
-  }, [searchText, continent]);
+    axios.get('http://localhost:8080/imc?town=' + searchText).then((response) => setUsers(response.data));
+  },[searchText]);
 
-  const onCountryClicked = (id: number) => {
-    axios.get('http://localhost:8080/countries/' + id).then((response) => setSelectedCountry(response.data));
+  const onUserClicked = (id: number) => {
+    axios.get('http://localhost:8080/imc/' + id).then((response) => setSelectedUser(response.data));
   }
 
-  const clearSelectedCountry = () => {
-    setSelectedCountry(undefined);
-  }
-
-  const getCountryFlagUrl = (name: string): string => {
-    return "https://www.geonames.org/flags/x/" + name.substring(0, 2).toLowerCase() + ".gif";
+  const clearSelectedUser = () => {
+    setSelectedUser(undefined);
   }
 
   return (
-    <Box className="App" sx={{ backgroundColor: 'lightgray', height: 1, display: "flex", flexDirection: "column" }}>
+    <Box className='App'sx={{ backgroundColor: 'lightgray', height: 1, display: "flex", flexDirection: "column"}}>
+      <Typography fontSize={"large"}> Users IMC application
       <Box sx={{ width: 1, display: "flex" }}>
-        <img src='https://fasttrackit.org/wp-content/uploads/2020/08/fasttrackit.png'></img>
-        <Box sx={{ flexGrow: 1 }}></Box>
-        <FormControl sx={{ margin: 1 }}>
-          <InputLabel>Continent</InputLabel>
-          <Select
-            value={continent}
-            label="Continent"
-            onChange={(e) => setContinent(e.target.value)}
-          >
-            <MenuItem value="Europe">Europe</MenuItem>
-            <MenuItem value="Oceania">Oceania</MenuItem>
-            <MenuItem value="Asia">Asia</MenuItem>
-          </Select>
-        </FormControl>
-        <TextField sx={{ margin: 1, mr: 2 }} label="Search" value={searchText} onChange={(e) => setSearchText(e.target.value)}></TextField>
+      <Box sx={{ flexGrow: 1 }}></Box>
+      <TextField sx={{ margin: 1, mr: 2 }} label="Search" value={searchText} onChange={(e: { target: { value: any; }; }) => setSearchText(e.target.value)}></TextField>
       </Box>
-      {selectedCountry && <Card sx={{ margin: 2, overflow: "unset" }}>
-        <Button onClick={() => clearSelectedCountry()}>Close</Button>
-        <Typography fontSize="small">Population: {selectedCountry.population}</Typography>
-        <Typography fontSize="small">Area: {selectedCountry.area}</Typography>
-        <Typography fontSize="small">Continent: {selectedCountry.continent}</Typography>
-        <img src={getCountryFlagUrl(selectedCountry.name)}></img>
+      </Typography>
+      {selectedUser && <Card sx={{margin:1, overflow:"unset"}}>
+        <Button onClick={()=>clearSelectedUser()}>Close</Button>
+        <Typography> Town: {selectedUser.town} </Typography>
+        <Typography>Contact: {selectedUser.contact} </Typography>
       </Card>}
       <Box sx={{ overflow: "auto" }}>
-        {countries?.map(country =>
-          <Card sx={{ margin: 2, cursor: "pointer" }} onClick={() => onCountryClicked(country.id)}>
-            <CardContent>
-              {country.name}
-            </CardContent>
-          </Card>
-        )}
+      {users?.map(user=>
+      <Card sx={{margin: 1, cursor: "pointer"}} onClick={()=>onUserClicked(user.id)}>
+        <CardContent>
+        {user.fullName}
+        </CardContent>
+        </Card>
+      )}
       </Box>
     </Box>
-  );
+  )
 }
 
 export default App;
