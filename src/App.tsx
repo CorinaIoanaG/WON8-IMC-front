@@ -67,8 +67,8 @@ const closeEditForm = (reload: boolean) => {
       {selectedUser &&
       <Grid container spacing={1}>
         <Grid item xs={6}>
-          <Box sx={{ margin:1 }}>
-            <EditForm closeEditForm={closeEditForm} selectedUser={selectedUser} reloadUsers={reloadedSelectedUser} ></EditForm>
+          <Box sx={{ margin:1}}>
+            <EditForm selectedUser={selectedUser} closeEditForm={closeEditForm} reloadUsers={reloadedSelectedUser} ></EditForm>
             <Card sx={{ mt: 2 }}>
                 <CardContent>Adaugare greutate
                   <AddDataForm reloadUser={reloadedSelectedUser} user={selectedUser}></AddDataForm>
@@ -90,7 +90,7 @@ const closeEditForm = (reload: boolean) => {
         {users?.map(user=>
         <Card sx={{margin: 1, cursor: "pointer"}} onClick={()=>onUserClicked(user.id)}>
           <CardContent>
-            {user.name}
+            {user.fullName}
           </CardContent>
         </Card>
       )}

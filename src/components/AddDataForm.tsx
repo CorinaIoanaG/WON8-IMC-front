@@ -13,16 +13,14 @@ const AddDataForm: FC<AddDataFormProps> = ({ user, reloadUser }) => {
     const [uWeight, setUWeight] =useState<number>();
 
     const addUserData = () => {
-        axios.post("http://localhost:8080/imc/" + user.id + "/datas", {date: new Date(), weight: uWeight, imc: Math.pow(user.height,2) }).then(response => {
-            setUWeight(0);
+        axios.post("http://localhost:8080/imc/" + user.id + "/datas", {date: new Date().getDate(), weight: uWeight, imc: Math.pow(user.height,2) }).then(response => {
             reloadUser();
         });
     }
 
     return <Box>
         <TextField label="Greutate" value={uWeight} onChange={(e) => setUWeight(e.target.value as unknown as number)}></TextField>
-        <Button onClick={() => addUserData()}>Add</Button>
-        <Typography> IMC {Math.pow(user.height,2)}</Typography>
+        <Button onClick={() => addUserData()}>Add</Button>  
     </Box>;
 }
 
