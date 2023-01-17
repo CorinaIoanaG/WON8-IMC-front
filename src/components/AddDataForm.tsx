@@ -12,15 +12,22 @@ export type AddDataFormProps = {
 const AddDataForm: FC<AddDataFormProps> = ({ user, reloadUser }) => {
     const [uWeight, setUWeight] =useState<number>();
 
-    const addUserData = () => {
-        axios.post("http://localhost:8080/imc/" + user.id + "/datas", {date: new Date().getDate(), weight: uWeight, imc: Math.pow(user.height,2) }).then(response => {
-            reloadUser();
-        });
+    const date = new Date().getDate() + '-' + (new Date().getMonth()+1) +'-' + new Date().getFullYear();
+
+    function addUserData() {
+        axios.post("http://localhost:8080/imc/" + user.id + "/datas",
+            { data: date, weight: uWeight, height: user.height })
+            .then(response => {
+                reloadUser();
+            });
     }
+
 
     return <Box>
         <TextField label="Greutate" value={uWeight} onChange={(e) => setUWeight(e.target.value as unknown as number)}></TextField>
         <Button onClick={() => addUserData()}>Add</Button>  
+        <Typography>Data: {date}</Typography>
+        <Typography>IMC: user.userdata[user.userdata.length-1].imc </Typography>
     </Box>;
 }
 
