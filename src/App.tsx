@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import axios from 'axios';
 import { User } from './model/User';
-import { Box, Button, Card, CardContent, FormControl, Grid, InputLabel, Select, TextField, Typography } from '@mui/material';
-import { margin } from '@mui/system';
+import { Box, Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
 import EditForm from './components/EditForm';
 import AddDataForm from './components/AddDataForm';
+import AddUser from './components/AddUser';
 
 
 function App(){
@@ -46,23 +46,24 @@ useEffect(()=>{
     setSelectedUser(undefined);
   }
 
-const closeEditForm = (reload: boolean) => {
-  setSelectedUser(undefined);
-  if (reload){
-  reloadUsers();
+  const closeEditForm = (reload: boolean) => {
+    setSelectedUser(undefined);
+    if (reload){
+    reloadUsers();
 }
 }
-
-  const fromChild = () =>{
-    console.log("something from child");
-  }
 
   return (
-    <Box className='App'sx={{ backgroundColor: 'lightgray', height: 1, display: "flex", flexDirection: "column"}}>
+    <Box className='App'sx={{ backgroundColor: 'lightgray', height: 2, display: "flex", flexDirection: "column"}}>
       <Typography fontSize={"large"}> Determinarea indicelui masei corporale si statistici utilizatori </Typography>
+      <Card sx={{ mt: 2 }}></Card>
       <Box sx={{ width: 1, display: "flex" }}>
+      <Box>
+        <Typography>Adaugare user nou</Typography>
+        <AddUser></AddUser>
+      </Box>
       <Box sx={{ flexGrow: 1 }}></Box>
-      <TextField sx={{ margin: 1, mr: 2 }} label="Search" value={searchText} onChange={(e) => setSearchText(e.target.value)}></TextField>
+      <TextField sx={{ margin: 1, mr: 2 }} label="Cauta dupa oras" value={searchText} onChange={(e) => setSearchText(e.target.value)}></TextField>
     </Box>
       {selectedUser &&
       <Grid container spacing={1}>
@@ -77,12 +78,13 @@ const closeEditForm = (reload: boolean) => {
           </Box>
         </Grid>
         <Grid item xs={6}>
-          <Card sx={{margin:1, overflow:"unset"}}>
+          <Card sx={{margin:1, overflow:"auto"}}>
             <Button onClick={()=>clearSelectedUser()}>Close</Button>
             <Button sx={{ color: "red" }} onClick={() => deleteUser(selectedUser.id)}>Delete</Button>
             <Typography>Nume: {selectedUser.fullName} </Typography>
             <Typography>Oras: {selectedUser.town} </Typography>
-            <Typography>Inaltime in metri: {selectedUser.height} </Typography>
+            <Typography>Inaltime in m: {selectedUser.height} </Typography>
+            <Typography>IMC mediu: </Typography>
           </Card>
         </Grid>
       </Grid>}
@@ -90,7 +92,7 @@ const closeEditForm = (reload: boolean) => {
         {users?.map(user=>
         <Card sx={{margin: 1, cursor: "pointer"}} onClick={()=>onUserClicked(user.id)}>
           <CardContent>
-            {user.fullName}
+            {user.name}
           </CardContent>
         </Card>
       )}

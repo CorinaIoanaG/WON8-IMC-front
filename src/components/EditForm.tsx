@@ -1,7 +1,6 @@
 import { Button, Card, CardActions, CardContent, TextField, Typography } from "@mui/material";
 import {Box} from "@mui/system"
 import axios from "axios";
-import { type } from "os"
 import {FC, useState} from "react"
 import { User } from "../model/User";
 
@@ -18,7 +17,7 @@ const [userTown, setUserTown]=useState<string>(selectedUser.town);
 const [userContact, setUserContact]=useState<string>(selectedUser.contact);
 
 const save = () => {
-    axios.patch("http://localhost:8080/imc/"+ selectedUser.id, { name: userFullName, town: userTown,contact: userContact}).
+    axios.patch("http://localhost:8080/imc/"+ selectedUser.id, { fullName: userFullName, town: userTown,contact: userContact}).
     then(response => reloadUsers());
 }
 
@@ -30,7 +29,7 @@ const save = () => {
             <TextField label = "Contact" value={userContact} onChange={(e)=>setUserContact(e.target.value)}></TextField>
         </CardContent>
         <CardActions>
-            <Button variant="contained" onClick={()=>save}>Save</Button>
+            <Button variant="contained" onClick={()=>save()}>Save</Button>
         </CardActions>
     </Card>
     </Box>
