@@ -6,12 +6,11 @@ import { User } from "../model/User";
 
 export type EditFormProps = {
     selectedUser: User;
-    value?: number;
     closeEditForm: (reload:boolean) => void;
     reloadUsers: () => void;
 }
 
-const EditForm: FC<EditFormProps> = ({selectedUser,value, closeEditForm, reloadUsers}) => {
+const EditForm: FC<EditFormProps> = ({selectedUser, closeEditForm, reloadUsers}) => {
 const [userFullName, setUserFullName]=useState<string>(selectedUser.fullName);
 const [userTown, setUserTown]=useState<string>(selectedUser.town);
 const [userContact, setUserContact]=useState<string>(selectedUser.contact);

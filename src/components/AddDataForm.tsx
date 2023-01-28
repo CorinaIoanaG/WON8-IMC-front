@@ -1,4 +1,4 @@
-import { Button,TextField, Typography } from "@mui/material";
+import { Button,Table,TableBody,TableCell,TableHead,TextField} from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import { FC, useState } from "react";
@@ -15,20 +15,29 @@ const AddDataForm: FC<AddDataFormProps> = ({ user, reloadUser }) => {
     
     function addUserData() {
         axios.post("http://localhost:8080/imc/" + user.id + "/datas",
-            { data: date, weight: uWeight, height: user.height })
+            { date: date, weight: uWeight, height: user.height })
             .then(response => {
                 reloadUser();
             });
     }
 
-
     return <Box>
-        <TextField label="Greutate" value={uWeight} onChange={(e) => setUWeight(e.target.value as unknown as number)}></TextField>
-        <TextField label="Data" value={date} onChange={(e) => setDate(e.target.value as unknown as Date)}></TextField>
+        <TextField sx= {{margin:1}} label="Greutate" value={uWeight} onChange={(e) => setUWeight(e.target.value as unknown as number)}></TextField>
+        <TextField sx= {{margin:1}} label="Data" value={date} onChange={(e) => setDate(e.target.value as unknown as Date)}></TextField>
         <Button onClick={() => addUserData()}>Add</Button>  
-        {user.userData?.map(userData=>
-          <><Typography>IMC: {userData.imc}</Typography><Typography> {userData.imcRange}</Typography></> 
-        )}
+        <Table size="small">
+            <TableHead>
+                <TableCell>Data</TableCell>
+                <TableCell>IMC</TableCell>
+                <TableCell>Explicatii</TableCell>
+            </TableHead>           
+            {user.userData?.map(userData=>
+             <TableBody>
+                <><TableCell>{userData.date.toString()}</TableCell><TableCell>{userData.imc.toFixed(2)}</TableCell><TableCell>{userData.imcRange}</TableCell></>
+            </TableBody>
+            )}      
+        </Table>
+      
     </Box>;
 }
 

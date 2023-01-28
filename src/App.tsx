@@ -49,22 +49,19 @@ useEffect(()=>{
   const closeEditForm = (reload: boolean) => {
     setSelectedUser(undefined);
     if (reload){
-    reloadUsers();
-}
-}
+    reloadUsers();}
+  }
+
 
   return (
-    <Box className='App'sx={{ backgroundColor: 'lightgray', height: 2, display: "flex", flexDirection: "column"}}>
-      <Typography fontSize={"large"}> Determinarea indicelui masei corporale si statistici utilizatori </Typography>
-      <Card sx={{ mt: 2 }}></Card>
-      <Box sx={{ width: 1, display: "flex" }}>
-      <Box>
-        <Typography>Adaugare user nou</Typography>
+    <Box className='App' sx={{ backgroundColor: 'lightgray', height: 2, display: "flex", flexDirection: "column"}}>
+      <Typography sx ={{height: 50}} fontSize={"large"}> DETERMINAREA INDICELUI MASEI CORPORALE SI STATISTICI UTILIZATORI </Typography>
+      <Box sx={{display: "flex", flexDirection: "row"}}>
+        <TextField sx={{ margin: 1, width: 160 }} label="Cauta dupa oras" value={searchText} onChange={(e) => setSearchText(e.target.value)}></TextField>
         <AddUser></AddUser>
       </Box>
-      <Box sx={{ flexGrow: 1 }}></Box>
-      <TextField sx={{ margin: 1, mr: 2 }} label="Cauta dupa oras" value={searchText} onChange={(e) => setSearchText(e.target.value)}></TextField>
-    </Box>
+      <Box sx={{height: 40}}></Box>
+      <Typography fontSize={"large"}>Lista userilor existenti</Typography>
       {selectedUser &&
       <Grid container spacing={1}>
         <Grid item xs={6}>
@@ -84,7 +81,7 @@ useEffect(()=>{
             <Typography>Nume: {selectedUser.fullName} </Typography>
             <Typography>Oras: {selectedUser.town} </Typography>
             <Typography>Inaltime in m: {selectedUser.height} </Typography>
-            <Typography>IMC mediu: </Typography>
+            <Typography>IMC mediu: {(selectedUser.userData.map(ud=>ud.imc).reduce((a, b) => a+b, 0)/selectedUser.userData.length).toFixed(2)} </Typography>
           </Card>
         </Grid>
       </Grid>}
